@@ -1,7 +1,7 @@
 // Copyright Paolo Galeone - 2014 - Licensed under MIT License
 
 // Define namespace
-var AJAX = function(){
+var AJAX = function(CORS){
   var xhr = false;
   
   //Closure - init XHR object on AJAX object creation
@@ -60,7 +60,8 @@ var AJAX = function(){
   var _request = function(req) {
     //abort after 30 seconds of delay in response
     var timeout = setTimeout(function() { xhr.abort();}, 30000);
-    
+    //Handle CORS
+    req.url == typeof(CORS) == 'undefined' ? "//" + document.domain + req.url : req.url;
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
         if(typeof(req.success) == 'function') {

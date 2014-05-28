@@ -17,6 +17,18 @@ try {
 }
 ```
 
+## Instantiate the AJAX object for a CORS request
+
+```javascript
+var ajax = null;
+try {
+  var CORS = true;
+  ajax = new AJAX(CORS);
+} catch(e) {
+  // handle error (XMLHttpRequest object not supported)
+}
+```
+
 ## GET request
 
 ```javascript
