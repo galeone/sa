@@ -115,6 +115,10 @@ var AJAX = function(CORS){
   }; // _request
   
   return {
+    setProgress: function(progress_function){
+      xhr.onprogress = progress_function;
+    },
+
     // generic request
     request: function(req) {
       _request(req);
