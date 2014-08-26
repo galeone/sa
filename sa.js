@@ -62,7 +62,10 @@ var AJAX = function(CORS){
     var timeout = setTimeout(function() { xhr.abort();}, 30000);
     //Handle CORS
     req.url == typeof(CORS) == 'undefined' ? "//" + document.domain + req.url : req.url;
+    console.log("log from _request, req.url = ", req.url);
     xhr.onreadystatechange = function() {
+          //console.log("log from xhr.onreadystatechange", xhr.responseText);
+          //console.log(xhr.readyState, xhr.status);
       if (xhr.readyState == 4 && xhr.status == 200) {
         if(typeof(req.success) == 'function') {
           clearTimeout(timeout);
@@ -73,6 +76,17 @@ var AJAX = function(CORS){
         }
       } else {
         if(xhr.readyState == 4) { //call error function only when request has completed
+          console.log("uhm, failing, but... ", xhr.responseText.length);
+          //console.log("sa: ", req);
+          if(xhr.responseText.length > 0){
+            //fix some shit in FF31 and previous with local files
+            clearTimeout(timeout);
+            req.success( req.dataType && req.dataType.toUpperCase() == 'JSON' ?
+              JSON.parse(xhr.responseText) :
+              req.dataType.toUpperCase() == 'XML' ? xhr.responseXML :
+              xhr.responseText);
+            return;
+          }
           if(typeof(req.failure) == 'function') {
             clearTimeout(timeout);
             req.failure(xhr.status);
