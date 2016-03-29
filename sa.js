@@ -43,12 +43,13 @@ var AJAX = function(CORS){
       //Translate JSON object to a query string
       // { foo:bar, what:yellow} becomes: foo=bar&what=yellow
       var str = '';
-      for(key in parameters) {
+      for(var key in parameters) {
           str += key + '=' + encodeURIComponent(parameters[key]) + '&';
       }
       
-      if(str == '')
+      if(str === '') {
         return false;
+      }
       
       return str.slice(0, str.length - 1);
     }
@@ -61,7 +62,7 @@ var AJAX = function(CORS){
     //abort after 30 seconds of delay in response
     var timeout = setTimeout(function() { xhr.abort();}, 30000);
     //Handle CORS
-    req.url == typeof(CORS) == 'undefined' ? "//" + document.domain + req.url : req.url;
+    req.url = typeof(CORS) == 'undefined' ? "//" + document.domain + req.url : req.url;
     console.log("log from _request, req.url = ", req.url);
     xhr.onreadystatechange = function() {
           //console.log("log from xhr.onreadystatechange", xhr.responseText);
@@ -71,7 +72,8 @@ var AJAX = function(CORS){
           clearTimeout(timeout);
           req.success( req.dataType && req.dataType.toUpperCase() == 'JSON' ?
               JSON.parse(xhr.responseText) :
-              req.dataType.toUpperCase() == 'XML' ? xhr.responseXML :
+              req.dataType && req.dataType.toUpperCase() == 'XML' ?
+              xhr.responseXML :
               xhr.responseText);
         }
       } else {
@@ -99,7 +101,6 @@ var AJAX = function(CORS){
       xhr.open("GET", req.url, true);
       // Set header so the called script knows that it's an XMLHttpRequest
       xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-      xhr.setRequestHeader("connection", "close");
       xhr.send();
     } else if(req.type.toLowerCase() == 'post') {
       req.data = _smartQueryString(req.data);
@@ -107,7 +108,6 @@ var AJAX = function(CORS){
       // Set header so the called script knows that it's an XMLHttpRequest
       xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
       xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xhr.setRequestHeader("connection", "close");
       xhr.send(req.data ? req.data : '');
     } else {
       throw new XHRException('Invalid (or unhandled) request type');
