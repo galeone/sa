@@ -1,5 +1,14 @@
 // Copyright Paolo Galeone 2014-2020 - Licensed under MIT License
 
+class XHRException extends Error {
+    constructor(...params) {
+        super(...params);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, XHRException)
+        }
+    }
+}
+
 // Define namespace
 var AJAX = function(CORS) {
     var xhr = false;
@@ -100,14 +109,15 @@ var AJAX = function(CORS) {
             }
         };
 
-        if (req.type.toLowerCase() == 'get') {
+        var req_type = req.type.toUpperCase();
+        if (req_type == 'GET') {
             xhr.open("GET", req.url, true);
             // Set header so the called script knows that it's an XMLHttpRequest
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             xhr.send();
-        } else if (req.type.toLowerCase() == 'post') {
+        } else if (req_type == 'POST' || req_type == 'PUT') {
             req.data = _smartQueryString(req.data);
-            xhr.open("POST", req.url, true);
+            xhr.open(req_type, req.url, true);
             // Set header so the called script knows that it's an XMLHttpRequest
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
