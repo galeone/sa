@@ -1,4 +1,4 @@
-// Copyright Paolo Galeone 2014-2020 - Licensed under MIT License
+// Copyright Paolo Galeone 2014-2022 - Licensed under MIT License
 
 class XHRException extends Error {
     constructor(...params) {
@@ -84,7 +84,7 @@ var AJAX = function(CORS) {
                     clearTimeout(timeout);
                     req.success(req.dataType && req.dataType.toUpperCase() == 'JSON' ?
                         JSON.parse(xhr.responseText) :
-                        req.dataType && req.dataType.toUpperCase() == 'XML' ?
+                        req.dataType && req.dataType && req.dataType.toUpperCase() == 'XML' ?
                         xhr.responseXML :
                         xhr.responseText);
                 }
@@ -97,7 +97,7 @@ var AJAX = function(CORS) {
                         clearTimeout(timeout);
                         req.success(req.dataType && req.dataType.toUpperCase() == 'JSON' ?
                             JSON.parse(xhr.responseText) :
-                            req.dataType.toUpperCase() == 'XML' ? xhr.responseXML :
+                            req.dataType && req.dataType.toUpperCase() == 'XML' ? xhr.responseXML :
                             xhr.responseText);
                         return;
                     }
