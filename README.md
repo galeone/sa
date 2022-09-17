@@ -35,8 +35,8 @@ try {
 ajax.get('/somepage?parmeter=wat&who=yello',function(data) {
   // handle completed get request
 },
-function(statusCode) { // Handle failure
-  console.log(statusCode);
+function(statusCode, body) { // Handle failure
+  console.log(statusCode, body);
 });
 ```
 
@@ -44,8 +44,9 @@ function(statusCode) { // Handle failure
 ```javascript
 ajax.post('/somepage', function(data) {
   // Handle completed post request
-}, function(statusCode) { // Handle failure
-  console.log(statusCode);
+}, function(statusCode, body) { // Handle failure
+
+  console.log(statusCode, body);
 }, parameters);
 ```
 
@@ -55,8 +56,8 @@ ajax.post('/somepage', function(data) {
 ajax.getJSON('/somepage?parmeter=wat&who=yello',function(data) {
   // Handle json return object, like:
   console.log(data.field1, data.field2);
-}, function(statusCode) { // Handle failure
-  console.log(statusCode);
+}, function(statusCode, body) { // Handle failure
+  console.log(statusCode, body);
 });
 ```
 
@@ -73,8 +74,9 @@ url: '/wow',
   success: function(json) {
     alert(json.responseField2);
   },
-  failure: function(statusCode) {
+  failure: function(statusCode, body) {
     alert("Request failed with status code: " + statusCode);
+    alert("Request failed with body: " + body);
   }
 });
 ```
@@ -94,7 +96,7 @@ To specify other parameters in `AJAX.request` you have to follow the definition 
   data: '',
   dataType: '',
   success: function(data){},
-  failure: function(errorCode){}
+  failure: function(errorCode, body){}
 };
 ```
 
@@ -105,7 +107,7 @@ With:
 + data: string|JSON
 + dataType: "JSON"|"XML"|""
 + success = function(data) {}
-+ failure = function(errorCode) {}
++ failure = function(errorCode, body) {}
 
 ## License
 

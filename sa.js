@@ -103,7 +103,17 @@ var AJAX = function(CORS) {
                     }
                     if (typeof(req.failure) == 'function') {
                         clearTimeout(timeout);
-                        req.failure(xhr.status);
+                        if (req.failure.length == 2) {
+                            req.failure(xhr.status, req.dataType && req.dataType.toUpperCase() == 'JSON' ?
+                                JSON.parse(xhr.responseText) :
+                                req.dataType && req.dataType.toUpperCase() == 'XML' ? xhr.responseXML :
+                                xhr.responseText
+                            );
+                        } else if (req.failure.length == 1) {
+                            req.failure(xhr.status);
+                        } else {
+                            req.failure();
+                        }
                     }
                 }
             }
@@ -115,7 +125,7 @@ var AJAX = function(CORS) {
             // Set header so the called script knows that it's an XMLHttpRequest
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             xhr.send();
-        } else if (req_type == 'POST' || req_type == 'PUT') {
+        } else if (req_type == 'POST' || req_type == 'PUT' || req_type == 'DELETE') {
             req.data = _smartQueryString(req.data);
             xhr.open(req_type, req.url, true);
             // Set header so the called script knows that it's an XMLHttpRequest
