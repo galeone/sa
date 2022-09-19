@@ -175,6 +175,16 @@ var AJAX = function(CORS) {
                 failure: failure,
                 data: parameters
             });
+        },
+        // delete request (shortcut for request)
+        delete: function(url, success, failure, parameters) {
+            _request({
+                type: 'DELETE',
+                url: url,
+                success: success,
+                failure: failure,
+                data: parameters
+            });
         }
     };
 };
