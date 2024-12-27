@@ -95,7 +95,7 @@ var AJAX = function(CORS) {
                         //fix some shit in FF31 and previous with local files
                         // or better, fix the fact that all the world is crazy and even if there is a body inside the response, the error code preveals and the body is ignored (that's so stupid).
                         clearTimeout(timeout);
-                        req.success(req.dataType && req.dataType.toUpperCase() == 'JSON' ?
+                        req.failure(req.dataType && req.dataType.toUpperCase() == 'JSON' ?
                             JSON.parse(xhr.responseText) :
                             req.dataType && req.dataType.toUpperCase() == 'XML' ? xhr.responseXML :
                             xhr.responseText);
@@ -121,13 +121,13 @@ var AJAX = function(CORS) {
 
         var req_type = req.type.toUpperCase();
         if (req_type == 'GET') {
-            xhr.open("GET", req.url, true);
+            xhr.open("GET", req.url, req.async == undefined ? true : req.async);
             // Set header so the called script knows that it's an XMLHttpRequest
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             xhr.send();
         } else if (req_type == 'POST' || req_type == 'PUT' || req_type == 'DELETE') {
             req.data = _smartQueryString(req.data);
-            xhr.open(req_type, req.url, true);
+            xhr.open(req_type, req.url, req.async == undefined ? true : req.async);
             // Set header so the called script knows that it's an XMLHttpRequest
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

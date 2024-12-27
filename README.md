@@ -71,6 +71,7 @@ url: '/wow',
   type: 'post',
   dataType: 'json',
   data: {wow: 'amazing', 'param2': 1},
+  async: true, // true is the default when the field is not set
   success: function(json) {
     alert(json.responseField2);
   },
@@ -80,7 +81,7 @@ url: '/wow',
   }
 });
 ```
-In the example above we do a POST request to /wow and we expect to obtain a JSON object in respose.
+In the example above we do a POST request to /wow and we expect to obtain a JSON object in response.
 
 We could specify JSON or XML for the expected format of the response. Empty field means HTML.
 
@@ -95,6 +96,7 @@ To specify other parameters in `AJAX.request` you have to follow the definition 
   url: '',
   data: '',
   dataType: '',
+  async: bool,
   success: function(data){},
   failure: function(errorCode, body){}
 };
@@ -106,6 +108,7 @@ With:
 + url = whatever you want
 + data: string|JSON
 + dataType: "JSON"|"XML"|""
++ async: undefined|true|false - when undefined, async is true by default
 + success = function(data) {}
 + failure = function(errorCode, body) {}
 
